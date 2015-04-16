@@ -20,7 +20,7 @@ function res = trebuchet1()
     
     beamangle = output(:,1);
     cwangle = output(:,2);
-    mangle = output (:,3);   
+    massangle = output (:,3);   
     
     function athetas = acceleration(t,thetas) %takes thetas(theta,vtheta, phi1, phi1v, phi2, phi2v) and returns athetas(vtheta,atheta)
         theta = thetas(1);
@@ -58,8 +58,8 @@ function res = trebuchet1()
         y2(i)= -0.5 * L * sin(beamangle(i));    
         xM(i) = x1(i) + R1 * cos(cwangle(i));
         yM(i) = y1(i) + R1 * sin(cwangle(i));
-        xm(i) = x2(i) + R2 * cos(mangle(i));
-        ym(i) = y2(i) + R2 * sin(mangle(i));
+        xm(i) = x2(i) + R2 * cos(massangle(i));
+        ym(i) = y2(i) + R2 * sin(massangle(i));
         
         % draw beam
         line((x1(i), y1(i)), (x2(i), y2(i)));
