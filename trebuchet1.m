@@ -50,7 +50,7 @@ function res = trebuchet1()
         aphi1 = accelerations(2);
         aphi2 = accelerations(3);
         
-        athetas = [vtheta; atheta; vphi1; aphi1; vphi1; aphi2]; 
+        athetas = [vtheta; atheta; vphi1; aphi1; vphi2; aphi2]
     end
 
 % animation code
