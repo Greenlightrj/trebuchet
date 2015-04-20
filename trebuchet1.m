@@ -12,11 +12,11 @@ function res = trebuchet1()
     iphi1 = -pi/2;
     iphi1v = 0;
     iphi2 = -pi/2;
-    iphi1v = 0;
+    iphi2v = 0;
     
-    initials = [itheta, ithetav, iphi1, iphi1v iphi2, iphi2v];
+    initials = [itheta, ithetav, iphi1, iphi1v, iphi2, iphi2v];
     
-    [time, output] = ode45(@acceleration,[0,10],initials); %inputs theta into accelerationfunc, and calculates v
+    [time, output] = ode45(@acceleration,[0,10],initials) %inputs theta into accelerationfunc, and calculates v
     
     beamangle = output(:,1);
     cwangle = output(:,2);
@@ -26,28 +26,31 @@ function res = trebuchet1()
         theta = thetas(1);
         vtheta = thetas(2);
         phi1 = thetas(3);
-        phi1v = thetas(4);
+        vphi1 = thetas(4);
         phi2 = thetas(5);
-        phi2v = thetas(6);
+        vphi2 = thetas(6);
         
-        a = M*L^2/4 + m*L^2/4 
-        b = M*L*R1/2 * cos(theta-phi1)
-        c = m*L*R1/2 * cos(theta-phi2)
-        d = .5*L*cos(theta - phi1)
-        e = 1
+        a = M*L^2/4 + m*L^2/4;
+        b = M*L*R1/2 * cos(theta-phi1);
+        c = m*L*R1/2 * cos(theta-phi2);
+        d = .5*L*cos(theta - phi1);
+        e = 1;
         f = 0;
         G = 0.5 * L + 0.5 * L*vtheta * sin(theta - phi2);
         h = 0;
         j = 1 - 0.5 * L * vtheta * sin(theta - phi2);
         
-        k = 0.5 * M * L * R1 * vtheta * vphi1 * sin(theta - phi1) - 0.5 * m * L * R2 * vtheta * vphi1 * sin(theta - phi2) + 0.5 * M * L * R1 * vtheta1 * sin(theta - phi1) * (vtheta - vphi1) + 0.5 * m * L * R2 * sin(theta - phi2) * (vtheta - vphi2);
+        k = 0.5 * M * L * R1 * vtheta * vphi1 * sin(theta - phi1) - 0.5 * m * L * R2 * vtheta * vphi2 * sin(theta - phi2) + 0.5 * M * L * R1 * vphi1 * sin(theta - phi1) * (vtheta - vphi1) + 0.5 * m * L * R2 * sin(theta - phi2) * (vtheta - vphi2);
         l = 0.5*L*vtheta*phi1*sin(theta - phi1) - g*cos(phi1) + 0.5*L*vtheta*sin(theta - phi1)* (vtheta - vphi1);
         n = 0.5*L*vtheta*phi2*sin(theta-phi2) + g*cos(phi2);
         coeffs = [a, b, c; d, e, f; G, h, j];
         otherside = [k; l; n];
-        [atheta, aphi1, aphi2] = inv(coeffs)*otherside;
+        accelerations = inv(coeffs)*otherside;
+        atheta = accelerations(1);
+        aphi1 = accelerations(2);
+        aphi2 = accelerations(3);
         
-        athetas = [vtheta, atheta, vphi1, aphi1, vphi1, aphi2]; 
+        athetas = [vtheta; atheta; vphi1; aphi1; vphi1; aphi2]; 
     end
 
 % animation code
@@ -62,12 +65,12 @@ function res = trebuchet1()
         ym(i) = y2(i) + R2 * sin(massangle(i));
         
         % draw beam
-        line((x1(i), y1(i)), (x2(i), y2(i)));
+        line([x1(i), y1(i)], [x2(i), y2(i)]);
         % draw cw and string
-        line((x1(i), y1(i)), (xM(i), yM(i)));
+        line([x1(i), y1(i)], [xM(i), yM(i)]);
         plot (xM(i), yM(i), 'o');
         % draw mass and string
-        line((x1(i), y1(i)), (xm(i), ym(i)));
+        line([x1(i), y1(i)], [xm(i), ym(i)]);
         plot (xm(i),ym(i),'o')
         
         hold on        
