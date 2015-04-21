@@ -5,7 +5,8 @@ function res = trebuchetdennyeqn()
     M = 5; % kg mass of counterweight
     m = 1; % kg mass of thrown thing
     g = 9.8; % m/s^2 gravity
-    
+    I = (M + m)*(L/2)^2;
+    V = (M - m) * g * L * 0.5;
     %initial conditions
     itheta = pi/4;
     ithetav = 0;
@@ -29,20 +30,20 @@ function res = trebuchetdennyeqn()
         vphi1 = thetas(4);
         phi2 = thetas(5);
         vphi2 = thetas(6);
-        
-        a = M*L^2/4 + m*L^2/4;
-        b = M*L*R1/2 * cos(theta-phi1);
-        c = m*L*R1/2 * cos(theta-phi2);
-        d = .5*L*cos(theta - phi1);
-        e = 1;
+
+        a = I;
+        b = -M*0.5*L*R1 * sin(theta-phi1);
+        c = m*0.5*L*R2 * cos(theta-phi2);
+        d = .5*L*sin(theta + phi1);
+        e = -R1;
         f = 0;
-        G = 0.5 * L + 0.5 * L*vtheta * sin(theta - phi2);
+        G = 0.5 * L *cos(theta - phi2);
         h = 0;
-        j = 1 - 0.5 * L * vtheta * sin(theta - phi2);
+        j = -R2;
         
-        k = 0.5 * M * L * R1 * vtheta * vphi1 * sin(theta - phi1) - 0.5 * m * L * R2 * vtheta * vphi2 * sin(theta - phi2) + 0.5 * M * L * R1 * vphi1 * sin(theta - phi1) * (vtheta - vphi1) + 0.5 * m * L * R2 * sin(theta - phi2) * (vtheta - vphi2);
-        l = 0.5*L*vtheta*phi1*sin(theta - phi1) - g*cos(phi1) + 0.5*L*vtheta*sin(theta - phi1)* (vtheta - vphi1);
-        n = 0.5*L*vtheta*phi2*sin(theta-phi2) + g*cos(phi2);
+        k = -0.5 * M * L * R1 * vphi1^2 * cos(theta - phi1) - 0.5 * m * L * R2 * vphi2^2 * sin(phi2 - theta) + V * cos(theta);
+        l = 0.5 * L * vtheta^2 * cos(theta + phi1) - g * sin(phi1);
+        n = 0.5 * L * vtheta^2 * sin(phi2 - theta) - g * cos(phi2);
         coeffs = [a, b, c; d, e, f; G, h, j];
         otherside = [k; l; n];
         accelerations = inv(coeffs)*otherside;
@@ -55,6 +56,8 @@ function res = trebuchetdennyeqn()
 
 % animation code
     for i = 1:length(output)
+        clf
+        hold on
         x1(i)= 0.5 * L * cos(beamangle(i));
         y1(i)= 0.5 * L * sin(beamangle(i));
         x2(i)= -0.5 * L * cos(beamangle(i));
@@ -63,8 +66,7 @@ function res = trebuchetdennyeqn()
         yM(i) = y1(i) + R1 * sin(cwangle(i));
         xm(i) = x2(i) + R2 * cos(massangle(i));
         ym(i) = y2(i) + R2 * sin(massangle(i));
-        
-        hold on
+
         %line plots ([x1, x2], [y1, y2]) for whatever reason 
         % draw beam
         
