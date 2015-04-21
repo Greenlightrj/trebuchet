@@ -65,19 +65,17 @@ function res = trebuchet1()
         ym(i) = y2(i) + R2 * sin(massangle(i));
         
         hold on
-        %line plots ([x1, x2], [y1, y2]) for whatever reason 
         % draw beam
-        
-        plot([x1(i), x2(i)], [y1(i), y2(i)]);
+        plot([x1(i), y1(i)], [x2(i), y2(i)]);
         plot(x1(i), y1(i),'rx')
         plot(x2(i), y2(i),'gx');
 
         % draw cw and string
-        plot([x1(i), xM(i)], [y1(i), yM(i)]);
+        plot([x1(i), y1(i)], [xM(i), yM(i)]);
         plot (xM(i), yM(i), 'o');
         
         % draw mass and string
-        plot([x2(i), xm(i)], [y2(i), ym(i)]);
+        plot([x2(i), y2(i)], [xm(i), ym(i)]);
         plot (xm(i), ym(i),'o')
         
         hold on        
