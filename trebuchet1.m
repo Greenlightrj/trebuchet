@@ -16,7 +16,7 @@ function res = trebuchet1()
     
     initials = [itheta, ithetav, iphi1, iphi1v, iphi2, iphi2v];
     
-    [time, output] = ode45(@acceleration,[0,10],initials) %inputs theta into accelerationfunc, and calculates v
+    [time, output] = ode45(@acceleration,[0,10],initials); %inputs theta into accelerationfunc, and calculates v
     
     beamangle = output(:,1);
     cwangle = output(:,2);
@@ -45,7 +45,7 @@ function res = trebuchet1()
         n = 0.5*L*vtheta*phi2*sin(theta-phi2) + g*cos(phi2);
         coeffs = [a, b, c; d, e, f; G, h, j];
         otherside = [k; l; n];
-        accelerations = inv(coeffs)*otherside;
+        accelerations = inv(coeffs)*otherside
         atheta = accelerations(1);
         aphi1 = accelerations(2);
         aphi2 = accelerations(3);
@@ -55,6 +55,8 @@ function res = trebuchet1()
 
 % animation code
     for i = 1:length(output)
+        clf
+        hold on
         x1(i)= 0.5 * L * cos(beamangle(i));
         y1(i)= 0.5 * L * sin(beamangle(i));
         x2(i)= -0.5 * L * cos(beamangle(i));
@@ -64,7 +66,6 @@ function res = trebuchet1()
         xm(i) = x2(i) + R2 * cos(massangle(i));
         ym(i) = y2(i) + R2 * sin(massangle(i));
         
-        hold on
         %line plots ([x1, x2], [y1, y2]) for whatever reason 
         % draw beam
         
