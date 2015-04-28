@@ -1,8 +1,9 @@
 function res = trebuchet1()
-	L = 10; % meters length of arm
+	L1 = 5; % meters length of counterweight arm
+    L2 = 5; % meters length of other arm
     R1 = 2;% meters string attached to counterweight
     R2 = 2;% meters string attached to m
-    M = 5; % kg mass of counterweight
+    M = 10; % kg mass of counterweight
     m = 1; % kg mass of thrown thing
     g = 9.8; % m/s^2 gravity
     
@@ -30,22 +31,22 @@ function res = trebuchet1()
         phi2 = thetas(5);
         vphi2 = thetas(6);
         
-        a = M*L^2/4 + m*L^2/4;
-        b = M*L*R1/2 * cos(theta-phi1);
-        c = m*L*R1/2 * cos(theta-phi2);
-        d = .5*L*cos(theta - phi1);
-        e = 1;
+        a = M*L1^2 + m*L2^2;
+        b = 0.5 * M * L1 * R1 * cos(phi1 - theta);
+        c = 0.5 * m * L2 * R2 * cos(phi2 - theta);
+        d = 0.5 * M * L1 * R1 * cos(phi1 - theta);
+        e = M * R1^2;
         f = 0;
-        G = 0.5 * L + 0.5 * L*vtheta * sin(theta - phi2);
+        G = 0.5 * m * L2 * R2 * cos(phi2 - theta);
         h = 0;
-        j = 1 - 0.5 * L * vtheta * sin(theta - phi2);
+        j = m * R2^2;
         
-        k = 0.5 * M * L * R1 * vtheta * vphi1 * sin(theta - phi1) - 0.5 * m * L * R2 * vtheta * vphi2 * sin(theta - phi2) + 0.5 * M * L * R1 * vphi1 * sin(theta - phi1) * (vtheta - vphi1) + 0.5 * m * L * R2 * sin(theta - phi2) * (vtheta - vphi2);
-        l = 0.5*L*vtheta*phi1*sin(theta - phi1) - g*cos(phi1) + 0.5*L*vtheta*sin(theta - phi1)* (vtheta - vphi1);
-        n = 0.5*L*vtheta*phi2*sin(theta-phi2) + g*cos(phi2);
+        k = -0.5 * M * L1 * R1 * vtheta * vphi1 * sin(phi1 - theta) - 0.5 * m * L2 * R2 * vtheta * vphi2 * sin(phi2 - theta) - M * g * L1 * cos(theta) + m * g * L2 * cos(theta);
+        l = -0.5 * (vphi1 - vtheta) * M * L1 * R1 * vtheta * cos(phi1 - theta) + 0.5 * M * L1 * R1 * vtheta * sin(phi1 - theta) - M * g * R1 * cos(theta);
+        n = -0.5 * m * L2 * R2 * vphi2 * sin(phi2 - theta) - m * g * R2 * cos(phi2) - (vphi2 * vtheta) * 0.5 * m * L2 * R2 * vtheta * cos(phi2 - theta);
         coeffs = [a, b, c; d, e, f; G, h, j];
         otherside = [k; l; n];
-        accelerations = inv(coeffs)*otherside
+        accelerations = inv(coeffs)*otherside;
         atheta = accelerations(1);
         aphi1 = accelerations(2);
         aphi2 = accelerations(3);
@@ -57,10 +58,10 @@ function res = trebuchet1()
     for i = 1:length(output)
         clf
         hold on
-        x1(i)= 0.5 * L * cos(beamangle(i));
-        y1(i)= 0.5 * L * sin(beamangle(i));
-        x2(i)= -0.5 * L * cos(beamangle(i));
-        y2(i)= -0.5 * L * sin(beamangle(i));
+        x1(i)= L1 * cos(beamangle(i));
+        y1(i)= L1 * sin(beamangle(i));
+        x2(i)= -1 * L2 * cos(beamangle(i));
+        y2(i)= -1 * L2 * sin(beamangle(i));
         xM(i) = x1(i) + R1 * cos(cwangle(i));
         yM(i) = y1(i) + R1 * sin(cwangle(i));
         xm(i) = x2(i) + R2 * cos(massangle(i));
