@@ -37,7 +37,8 @@ function res = grapher()
     for i = 1:.5:95
         counter2 = 1;
         for j = 1:.3:7.5
-            V(counter2,counter1) = -lever_arm_calculation2(j, 10-j, i, 100-i)*5;
+            V(counter2,counter1)
+            vel = -lever_arm_calculation2(j, 10-j, i, 100-i)*5;
             M_m(counter1) = i/(100-i);
             p_p(counter2) = j/(10-j);
             counter2 = counter2 + 1;

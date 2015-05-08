@@ -1,8 +1,8 @@
 function res = lever_arm2(L1, L2, M, m)
-	L1 = L1 %5; % meters length of counterweight arm
-    L2 = L2 %5; % meters length of other arm
-    M = M %10; % kg mass of counterweight
-    m = m %1; % kg mass of thrown thing
+	L1 = L1; %5; % meters length of counterweight arm
+    L2 = L2; %5; % meters length of other arm
+    M = M; %10; % kg mass of counterweight
+    m = m; %1; % kg mass of thrown thing
     g = 9.8; % m/s^2 gravity
     
     %Initial Conditions
